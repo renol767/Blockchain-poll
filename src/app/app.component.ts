@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { PollService } from './poll-service/poll.service';
+import { Poll } from './types';
 
 @Component({
   selector: 'app-root',
@@ -7,20 +9,18 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   showForm = false;
+  activePoll: Poll = null;
 
-  // Create Mock data
-  polls = [
-  {
-    question: 'Do You Need Blockchain System Now?',
-    image: 'https://images.bisnis-cdn.com/posts/2019/06/03/930240/blockchain.jpg',
-    votes: [0, 5, 7],
-    voted: true,
-  },
-  {
-    question: 'We Need Buy the ETH now?',
-    image: 'https://lintasdaerah.com/wp-content/uploads/2018/09/investasi-ethereum-lebih-potensial-dibandingkan-bitcoin.jpg',
-    votes: [0, 3, 6, 1],
-    voted: false,
+  polls = this.ps.getPolls();
+
+  constructor(private ps: PollService) {
   }
-  ];
+
+  setActivePoll(poll) {
+    this.activePoll = null;
+
+    setTimeout(() => {
+      this.activePoll = poll;
+    }, 100);
+  }
 }
