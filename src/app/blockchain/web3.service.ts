@@ -10,7 +10,7 @@ declare var window: any;
 export class Web3Service {
   private web3: Web3;
   private contract: Contract;
-  private contractAddress = '0xF9d0fA9704e86F78972004e1A1114C4570140cCa';
+  private contractAddress = '0x4F33AEABA8aDee2Ebf39455cA658a9cA521c624c';
 
   constructor() {
     if (window.web3) {
@@ -28,8 +28,15 @@ export class Web3Service {
     return this.web3.eth.getAccounts().then((accounts) => accounts[0] || '');
   }
 
+  // executeTransaction("vote", pollId, vote)
+  // executeTransaction("createPoll", question, thumb, opt)
   async executeTransaction(fnName: string, ...args: any[]): Promise<void> {
     const acc = await this.getAccount();
-    this.contract.methods['vote'](...args).send({ from: acc });
+    this.contract.methods[fnName](...args).send({ from: acc });
+  }
+
+  async call(fnName: string, ...args: any[]) {
+    const acc = await this.getAccount();
+    return this.contract.methods[fnName](...args).call({ from: acc });
   }
 }
